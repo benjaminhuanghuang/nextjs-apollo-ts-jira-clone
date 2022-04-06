@@ -23,7 +23,7 @@ Code: https://github.com/judygab/Jira-Asana-Clone
 
 2. Setup Prisma
 ```
-  npm i prisma -D
+  npm i prisma @prisma/client -D
 
   npx prisma init
 ```
@@ -35,7 +35,23 @@ Code: https://github.com/judygab/Jira-Asana-Clone
   3. get the crednetials
 ```
 
+4. Setup PrismaClient
+Create db    
+```
+npx prisma db push  
+```
 
+Open prisma GUI and add data
+```
+npx prisma studio
+```
+
+Crete lib/prisma.ts hold a global instance of PrismaClient
+
+
+5. Setup GraphQL
+```
+```
 
 
 
