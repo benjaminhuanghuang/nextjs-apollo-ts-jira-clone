@@ -52,7 +52,7 @@ Crete lib/prisma.ts hold a global instance of PrismaClient
 5. Setup GraphQL
 nexus for schema generation
 ```
-  npm i nexus
+  npm i graphql nexus
 ```
 Use Next.js api routes to create GraphQL endpoint
 /pages/api
