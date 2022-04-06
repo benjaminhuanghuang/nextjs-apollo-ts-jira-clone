@@ -45,111 +45,95 @@ const UpdateTaskMutation = gql`
 `
 
 const Board = () => {
+  const [tasks, setTasks] = useState([]);
   const { data, loading, error } = useQuery(AllTasksQuery, {
     onCompleted: data => {
       console.log(data.tasks)
       setTasks(data.tasks)
     }
   });
-  const [updateTask] = useMutation(UpdateTaskMutation);
-  const { data: session, status } = useSession()
-  const [getTasks, { data: tasksData, loading: tasksLoading, error: tasksError }] = useLazyQuery(GetUserQuery);
-  const [tasks, setTasks] = useState([]);
-  const sections: Array<String> = ['Backlog', 'In-Progress', 'Review', 'Done'];
+  // const [updateTask] = useMutation(UpdateTaskMutation);
+  // const { data: session, status } = useSession()
+  // const [getTasks, { data: tasksData, loading: tasksLoading, error: tasksError }] = useLazyQuery(GetUserQuery);
 
-  useEffect(() => {
-    if (session) {
-      getTasks({ variables: { email: session.user.email }});
-    }
-  }, [session])
+  // const sections: Array<String> = ['Backlog', 'In-Progress', 'Review', 'Done'];
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Oh no... {error.message}</p>
+  // useEffect(() => {
+  //   if (session) {
+  //     getTasks({ variables: { email: session.user.email }});
+  //   }
+  // }, [session])
 
-  // if (tasksLoading) return <p>Loading...</p>
-  // if (tasksError) return <p>Oh no... {tasksError.message}</p>
+  // if (loading) return <p>Loading...</p>
+  // if (error) return <p>Oh no... {error.message}</p>
 
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
+  // // if (tasksLoading) return <p>Loading...</p>
+  // // if (tasksError) return <p>Oh no... {tasksError.message}</p>
 
-    if (!destination) {
-      return;
-    }
+  // const onDragEnd = (result) => {
+  //   const { destination, source, draggableId } = result;
 
-    if ( destination.droppableId === source.droppableId ) {
-      return;
-    }
+  //   if (!destination) {
+  //     return;
+  //   }
 
-    const updatedTasksList = tasks && tasks.map((t: any) => {
-      if (t.id === draggableId) {
-        return {
-          ...t,
-          status: destination.droppableId
-        }
-      } else {
-        return t;
-      }
-    })
-    setTasks(updatedTasksList);
+  //   if ( destination.droppableId === source.droppableId ) {
+  //     return;
+  //   }
 
-    updateTask({
-      variables: {
-        id: draggableId,
-        status: destination.droppableId,
-      },
-    update: (cache, { data }) => {
-      const existingTasks : any = cache.readQuery({
-        query: AllTasksQuery
-      });
-      const updatedTasks = existingTasks!.tasks.map((t: any) => {
-        if (t.id === draggableId) {
-          return {
-            ...t,
-            ...data!.updateTask! };
-          } else {
-            return t;
-          }
-        }
-      );
-      cache.writeQuery({
-        query: AllTasksQuery,
-        data: {tasks: updatedTasks}
-      });
-      const dataInCache = cache.readQuery({ query: AllTasksQuery});
-      console.log(dataInCache);
-    },
-    onCompleted: data => {
-      // setTasks(data.tasks)
-    }
-  })
-  }
+  //   const updatedTasksList = tasks && tasks.map((t: any) => {
+  //     if (t.id === draggableId) {
+  //       return {
+  //         ...t,
+  //         status: destination.droppableId
+  //       }
+  //     } else {
+  //       return t;
+  //     }
+  //   })
+  //   setTasks(updatedTasksList);
 
-  const reFetchTasks = () => {
-    if (session) {
-      getTasks({ variables: { email: session.user.email }});
-    }
-  }
+  //   updateTask({
+  //     variables: {
+  //       id: draggableId,
+  //       status: destination.droppableId,
+  //     },
+  //   update: (cache, { data }) => {
+  //     const existingTasks : any = cache.readQuery({
+  //       query: AllTasksQuery
+  //     });
+  //     const updatedTasks = existingTasks!.tasks.map((t: any) => {
+  //       if (t.id === draggableId) {
+  //         return {
+  //           ...t,
+  //           ...data!.updateTask! };
+  //         } else {
+  //           return t;
+  //         }
+  //       }
+  //     );
+  //     cache.writeQuery({
+  //       query: AllTasksQuery,
+  //       data: {tasks: updatedTasks}
+  //     });
+  //     const dataInCache = cache.readQuery({ query: AllTasksQuery});
+  //     console.log(dataInCache);
+  //   },
+  //   onCompleted: data => {
+  //     // setTasks(data.tasks)
+  //   }
+  // })
+  // }
+
+  // const reFetchTasks = () => {
+  //   if (session) {
+  //     getTasks({ variables: { email: session.user.email }});
+  //   }
+  // }
 
   return (
     <div className="pt-3 h-100 d-flex flex-column">
-      <Row>
-        <h1>Project Title</h1>
-      </Row>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="board-container d-flex flex-row flex-grow-1">
-          {sections.map((section, index) => {
-            let filteredData: Array<Task> = tasksData ? tasksData.user.tasks.filter((task: Task) => {return task.status === section}) : [];
-            return (
-              <BoardSection
-                title={section}
-                key={index}
-                tasks={filteredData}
-                reFetchTasks={reFetchTasks}
-                ></BoardSection>
-            )
-          })}
-        </div>
-      </DragDropContext>
+        B onDragEnd
     </div>
   );
 };
